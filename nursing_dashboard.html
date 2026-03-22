@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주하야~! 간호학과 가자~!!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg: #F7F6F3;
+  --surface: #FFFFFF;
+  --surface2: #F0EEE9;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #1A1917;
+  --text2: #5C5B57;
+  --text3: #9C9B97;
+  --accent: #2563EB;
+  --accent-light: #EFF6FF;
+  --accent-text: #1D4ED8;
+  --teal: #0D9488;
+  --teal-light: #F0FDFA;
+  --teal-text: #0F766E;
+  --amber: #D97706;
+  --amber-light: #FFFBEB;
+  --amber-text: #B45309;
+  --red: #DC2626;
+  --red-light: #FEF2F2;
+  --red-text: #B91C1C;
+  --green: #16A34A;
+  --green-light: #F0FDF4;
+  --green-text: #15803D;
+  --purple: #7C3AED;
+  --purple-light: #F5F3FF;
+  --purple-text: #6D28D9;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 60px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── 헤더 ── */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-dot {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #2563EB, #0D9488);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: white; font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  flex-shrink: 0;
+}
+.header-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.header-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.header-badge {
+  font-size: 10px; font-weight: 500;
+  background: var(--accent-light); color: var(--accent-text);
+  padding: 3px 8px; border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* ── 네비 탭 ── */
+.nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-tab {
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all .2s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.nav-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.nav-tab:hover:not(.active) { color: var(--text2); }
+
+/* ── 레이아웃 ── */
+.page { display: none; padding: 20px 16px 80px; max-width: 960px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* ── 메트릭 카드 ── */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+@media (min-width: 600px) {
+  .metric-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.metric-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+}
+.metric-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+.metric-val { font-size: 24px; font-weight: 700; color: var(--text); line-height: 1.1; }
+.metric-sub { font-size: 11px; color: var(--text2); margin-top: 3px; }
+
+/* ── 섹션 헤더 ── */
+.section-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 24px 0 12px;
+}
+
+/* ── 학교 카드 그리드 ── */
+.school-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (min-width: 560px) {
+  .school-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 800px) {
+  .school-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.school-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: var(--shadow);
+}
+.school-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.school-card.selected { border-color: var(--accent); border-width: 2px; }
+.sc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
+.sc-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.region-badge {
+  font-size: 10px; font-weight: 500;
+  padding: 2px 8px; border-radius: 20px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.r-seoul { background: #EFF6FF; color: #1D4ED8; }
+.r-gyeonggi { background: #F0FDF4; color: #15803D; }
+.r-daegu { background: #FFFBEB; color: #B45309; }
+.sc-stat { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+.sc-bar-row { display: flex; align-items: center; gap: 8px; }
+.sc-bar-bg { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.sc-bar-fill { height: 100%; background: var(--teal); border-radius: 2px; }
+.sc-bar-label { font-size: 10px; color: var(--text3); min-width: 28px; text-align: right; }
+.sc-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+.tag {
+  font-size: 10px; font-weight: 500;
+  padding: 2px 7px; border-radius: 10px;
+}
+.tag-susi { background: #F0FDFA; color: #0F766E; }
+.tag-jeongsi { background: #EFF6FF; color: #1D4ED8; }
+.tag-strict { background: #FEF2F2; color: #B91C1C; }
+.tag-none { background: #F3F4F6; color: #6B7280; }
+.tag-special { background: #F5F3FF; color: #6D28D9; }
+
+/* ── 상세 패널 ── */
+.detail-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 16px;
+  box-shadow: var(--shadow-md);
+}
+.detail-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.detail-name { font-size: 18px; font-weight: 700; }
+.detail-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+  .detail-stats { grid-template-columns: repeat(6, 1fr); }
+}
+.ds-item {
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+.ds-label { font-size: 10px; color: var(--text3); margin-bottom: 3px; }
+.ds-val { font-size: 14px; font-weight: 700; color: var(--text); }
+.detail-section-title {
+  font-size: 12px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin: 16px 0 8px;
+}
+.adm-table-wrap { overflow-x: auto; }
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 480px;
+}
+.adm-table th {
+  text-align: left;
+  padding: 8px 10px;
+  background: var(--surface2);
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.adm-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  color: var(--text);
+}
+.adm-table tr:last-child td { border-bottom: none; }
+.adm-table tr:hover td { background: var(--surface2); }
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.rg-item {
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+.rg-label { font-size: 10px; color: var(--text3); margin-bottom: 3px; }
+.rg-val { font-size: 13px; font-weight: 700; }
+.grade-high { color: var(--teal); }
+.grade-mid { color: var(--accent); }
+.grade-low { color: var(--amber); }
+.grade-na { color: var(--text3); font-weight: 400; font-size: 11px; }
+.note-box {
+  background: var(--surface2);
+  border-left: 3px solid var(--border2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 12px;
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-top: 8px;
+}
+.reliability-badge {
+  font-size: 10px; font-weight: 500;
+  padding: 3px 8px; border-radius: 20px;
+}
+.rel-official { background: var(--green-light); color: var(--green-text); }
+.rel-est { background: var(--amber-light); color: var(--amber-text); }
+
+/* ── 비교 테이블 ── */
+.compare-wrap { overflow-x: auto; margin-bottom: 16px; }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 640px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.compare-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--surface2);
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.compare-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: var(--surface2); }
+
+/* ── 차트 ── */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+@media (min-width: 680px) {
+  .chart-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.chart-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.chart-subtitle { font-size: 11px; color: var(--text3); margin-top: 6px; }
+.chart-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+.chart-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.chart-full { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin-bottom: 14px; }
+
+/* ── 입결 테이블 ── */
+.result-wrap { overflow-x: auto; margin-bottom: 16px; }
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 560px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.result-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--surface2);
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.result-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.result-table tr:last-child td { border-bottom: none; }
+.result-table tr:hover td { background: var(--surface2); }
+
+/* ── 페이지별 타이틀 ── */
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.page-desc { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+
+/* ── 하단 고정 note ── */
+.bottom-note {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 8px 16px;
+  font-size: 10px;
+  color: var(--text3);
+  text-align: center;
+  z-index: 50;
+}
+
+/* ── 반응형 조정 ── */
+@media (max-width: 480px) {
+  .detail-stats { grid-template-columns: repeat(2, 1fr); }
+  .result-grid { grid-template-columns: repeat(2, 1fr); }
+  .header-badge { display: none; }
+  .metric-val { font-size: 20px; }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.fade-in { animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--accent);
+  cursor: pointer;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.back-btn:hover { text-decoration: underline; }
+
+.info-banner {
+  background: var(--accent-light);
+  border: 1px solid rgba(37,99,235,0.15);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--accent-text);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+.highlight-row td { background: #FFFBEB !important; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="header-dot">주</div>
+    <div>
+      <div class="header-title">주하야~! 간호학과 가자~!!</div>
+      <div class="header-sub">9개 대학 · 2027학년도 기준</div>
+    </div>
+  </div>
+  <span class="header-badge">2027 기준</span>
+</header>
+
+<nav class="nav">
+  <button class="nav-tab active" onclick="goTab('home')">홈</button>
+  <button class="nav-tab" onclick="goTab('schools')">학교별</button>
+  <button class="nav-tab" onclick="goTab('compare')">비교표</button>
+  <button class="nav-tab" onclick="goTab('chart')">통계</button>
+  <button class="nav-tab" onclick="goTab('result')">입시결과</button>
+</nav>
+
+<!-- ══ 홈 ══ -->
+<div id="page-home" class="page active">
+  <div class="page-title">안녕하세요, 주하!</div>
+  <div class="page-desc">2027학년도 간호학과 입시 정보를 한눈에 정리했어요.</div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-label">총 모집 인원</div>
+      <div class="metric-val">833명</div>
+      <div class="metric-sub">9개 대학 합산</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">수시 평균 비율</div>
+      <div class="metric-val">71%</div>
+      <div class="metric-sub">정시 29%</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">최대 모집 대학</div>
+      <div class="metric-val">150명</div>
+      <div class="metric-sub">계명대학교</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">논술전형 운영</div>
+      <div class="metric-val">2개교</div>
+      <div class="metric-sub">성신여대·경북대</div>
+    </div>
+  </div>
+
+  <div class="info-banner">
+    💡 수능최저가 없는 <strong>한양대 학생부종합</strong>과 <strong>대구대 학종 서류전형(85명)</strong>은 내신 부담을 줄일 수 있는 선택지예요. 논술전형은 내신 3등급대도 합격 가능합니다.
+  </div>
+
+  <div class="section-header">빠른 학교 비교</div>
+  <div class="school-grid" id="homeSchoolGrid"></div>
+
+  <div class="section-header">전형별 전략 포인트</div>
+  <div style="display:grid;gap:10px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)">
+      <div style="font-size:13px;font-weight:700;color:var(--teal);margin-bottom:6px">📚 학생부교과전형</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7">내신 성적이 핵심. 서울권은 1~2등급, 경기권 2등급대, 대구·경북권 2~2.5등급 수준이 합격 라인. 수능최저 충족 여부가 당락을 가르는 경우가 많음.</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">📋 학생부종합전형</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7">서류·면접 중심. 한양대는 수능최저 없이 학종 선발. 이화여대는 면접 영향력이 크며 내신 1.8등급 합격 사례도 있음. 비교과·진로활동이 중요.</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)">
+      <div style="font-size:13px;font-weight:700;color:var(--purple);margin-bottom:6px">✏️ 논술전형</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7">성신여대(인문·자연)와 경북대에서 운영. 내신 3등급대도 합격 가능하지만 경쟁률이 높음(성신여대 논술 인문 47.4대1). 논술 준비를 병행하면 지원 폭이 넓어짐.</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)">
+      <div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:6px">🎯 지역인재전형</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7">경북대·계명대·대구대는 지역인재전형 비중이 높음. 대구·경북 고교 이수자에게 유리. 전국선발과 합격선 차이가 크지 않아 내신 경쟁력 확보 필요.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 학교별 ══ -->
+<div id="page-schools" class="page">
+  <div id="schools-list">
+    <div class="page-title">학교별 상세</div>
+    <div class="page-desc">학교를 선택하면 전형 정보와 입시결과를 확인할 수 있어요.</div>
+    <div class="school-grid" id="schoolListGrid"></div>
+  </div>
+  <div id="school-detail" style="display:none">
+    <div class="back-btn" onclick="backToList()">← 목록으로</div>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<!-- ══ 비교표 ══ -->
+<div id="page-compare" class="page">
+  <div class="page-title">전체 비교표</div>
+  <div class="page-desc">9개 대학 핵심 정보를 한 화면에서 비교해 보세요.</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>대학</th>
+          <th>지역</th>
+          <th>총정원</th>
+          <th>수시/정시</th>
+          <th>주요 전형</th>
+          <th>수능최저</th>
+          <th>교과 입결</th>
+          <th>정시 군</th>
+        </tr>
+      </thead>
+      <tbody id="compareBody"></tbody>
+    </table>
+  </div>
+  <div class="note-box">※ 교과 입결은 70%컷 또는 평균등급 (공식 발표 기준). "(추정)" 표기 항목은 직접 확인되지 않은 추산값. 최종 지원 전 각 대학 공식 자료를 반드시 확인하세요.</div>
+</div>
+
+<!-- ══ 통계 ══ -->
+<div id="page-chart" class="page">
+  <div class="page-title">입시 통계</div>
+  <div class="page-desc">모집 규모와 전형 구성을 시각적으로 확인하세요.</div>
+
+  <div class="chart-full">
+    <div class="chart-title">대학별 모집인원 (수시 / 정시)</div>
+    <div style="position:relative;height:280px">
+      <canvas id="chartBar"></canvas>
+    </div>
+    <div class="chart-legend" style="margin-top:10px">
+      <div class="chart-legend-item"><span class="legend-dot" style="background:#0D9488"></span>수시</div>
+      <div class="chart-legend-item"><span class="legend-dot" style="background:#2563EB"></span>정시</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">수시 비율 비교 (%)</div>
+      <div style="position:relative;height:240px">
+        <canvas id="chartSusiPct"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">수능최저 강도 비교</div>
+      <div style="position:relative;height:240px">
+        <canvas id="chartMinScore"></canvas>
+      </div>
+      <div class="chart-subtitle">0=없음 · 1=완화(2합8~9) · 2=보통(2합7) · 3=엄격(3합)</div>
+    </div>
+  </div>
+
+  <div class="chart-full">
+    <div class="chart-title">지역별 총 모집인원 분포</div>
+    <div style="position:relative;height:220px">
+      <canvas id="chartRegion"></canvas>
+    </div>
+    <div class="chart-legend" style="margin-top:10px">
+      <div class="chart-legend-item"><span class="legend-dot" style="background:#2563EB"></span>서울 (4개교)</div>
+      <div class="chart-legend-item"><span class="legend-dot" style="background:#0D9488"></span>경기 (2개교)</div>
+      <div class="chart-legend-item"><span class="legend-dot" style="background:#D97706"></span>대구·경북 (3개교)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 입시결과 ══ -->
+<div id="page-result" class="page">
+  <div class="page-title">과거 입시결과</div>
+  <div class="page-desc">2024~2025학년도 기준 합격 등급 및 수능 백분위예요.</div>
+
+  <div class="info-banner">
+    ⚠️ 공식 발표 자료 외 "(추정)" 항목은 언론 보도 기반 추산값입니다. 최종 지원 전 반드시 각 대학 입학처 공식 발표 자료를 확인하세요.
+  </div>
+
+  <div class="section-header">수시 내신 합격선</div>
+  <div class="result-wrap">
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>대학</th>
+          <th>교과전형</th>
+          <th>학생부종합</th>
+          <th>논술전형</th>
+          <th>신뢰도</th>
+        </tr>
+      </thead>
+      <tbody id="susiResultBody"></tbody>
+    </table>
+  </div>
+  <div class="note-box">※ 교과는 70%컷, 종합은 등록자 평균 기준. 학종 등급은 내신 이외 비교과·면접 변수가 크므로 단순 참고용으로만 활용하세요.</div>
+
+  <div class="section-header" style="margin-top:24px">정시 수능 입결</div>
+  <div class="result-wrap">
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>대학</th>
+          <th>정시 군</th>
+          <th>수능 백분위 (70%컷)</th>
+          <th>경쟁률</th>
+          <th>비고</th>
+        </tr>
+      </thead>
+      <tbody id="jeongsiResultBody"></tbody>
+    </table>
+  </div>
+  <div class="note-box">※ 이화여대·성신여대·가천대는 각 대학 자체 환산점수 방식이 반영된 수치이므로 단순 비교 시 주의 필요. 한양대는 자체 환산점수로 발표함.</div>
+</div>
+
+<div class="bottom-note">2027학년도 전형 요강 기준 · 최종 지원 전 각 대학 공식 모집요강 반드시 확인</div>
+
+<script>
+const SCHOOLS = [
+  {
+    id:'hanyang', name:'한양대학교', region:'서울', rc:'r-seoul',
+    total:38, susi:25, jeongsi:13, susiPct:66,
+    minScore:'없음', minLevel:0, jBun:'가군',
+    kyoGrade:'~1.3등급 이상', jongGrade:'1.96등급 (평균)', jeongsiBp:'가군 (개별확인)',
+    reliable:true,
+    memo:'서류형 최종등록자 1.96등급. 수능최저 없는 학종이 강점.',
+    adm:[
+      {type:'수시',name:'학생부교과 추천형',cnt:4,method:'교과90%+정성평가10%',min:'없음',note:'학교장 추천 필요'},
+      {type:'수시',name:'학생부종합 추천형',cnt:6,method:'1단계 서류100%(3배수)→2단계 70%+면접30%',min:'없음',note:'비교과 역량 중심'},
+      {type:'수시',name:'학생부종합 서류형',cnt:15,method:'서류 100%',min:'없음',note:'수능최저 없음이 강점'},
+      {type:'정시',name:'수능 (가군)',cnt:13,method:'수능 100%',min:'-',note:'한양대 자체 환산점수 적용'},
+    ],
+    tags:['수능최저없음','학종추천','서류형'],
+    features:['수능최저 전형 없음','서울 성동구 위치','학종 서류형 15명']
+  },
+  {
+    id:'ewha', name:'이화여자대학교', region:'서울', rc:'r-seoul',
+    total:78, susi:49, jeongsi:29, susiPct:63,
+    minScore:'3~5개합', minLevel:2, jBun:'다군',
+    kyoGrade:'~1.6등급', jongGrade:'1.6~2.0등급 추정', jeongsiBp:'88.13~88.15',
+    reliable:true,
+    memo:'교과전형 내신1.8등급 최종합격 사례. 면접 비중 20%이나 영향력 큼.',
+    adm:[
+      {type:'수시',name:'고교추천 (교과)',cnt:16,method:'교과80%+서류20%→1단계 후 면접',min:'4개합5이내',note:'면접 영향력 큼'},
+      {type:'수시',name:'미래인재 (학종)',cnt:16,method:'1단계 서류100%→2단계 70%+면접30%',min:'3개합5이내',note:''},
+      {type:'수시',name:'기타 수시전형',cnt:17,method:'전형별 상이',min:'전형별',note:'고른기회·어울림 등'},
+      {type:'정시',name:'수능 (다군)',cnt:29,method:'수능100% (인문·자연 유리한 쪽 반영)',min:'-',note:'과탐 1과목당 6% 가산점'},
+    ],
+    tags:['면접비중큼','인문자연모두','다군'],
+    features:['인문·자연 반영비율 유리한 쪽 적용','정시 다군 배치','서울 서대문구 위치']
+  },
+  {
+    id:'sungshin', name:'성신여자대학교', region:'서울', rc:'r-seoul',
+    total:88, susi:59, jeongsi:29, susiPct:67,
+    minScore:'있음 (전형별)', minLevel:1, jBun:'㉮·㉯군',
+    kyoGrade:'1.75등급', jongGrade:'2.x~3.x등급 추정', jeongsiBp:'~85 (백분위 평균)',
+    reliable:true,
+    memo:'논술(인문) 경쟁률 47.4대1. 인문계 논술 내신 3.12등급 평균. 인문·자연 구분 지원 가능.',
+    adm:[
+      {type:'수시',name:'지역균형 (교과)',cnt:6,method:'학생부교과 100%',min:'있음',note:'자연계열'},
+      {type:'수시',name:'성신인재 (학종)',cnt:27,method:'서류 100%',min:'있음',note:'자연16명+인문11명 구분'},
+      {type:'수시',name:'논술우수자 인문',cnt:5,method:'논술60%+교과40%',min:'있음',note:'경쟁률 47.4대1'},
+      {type:'수시',name:'논술우수자 자연',cnt:14,method:'논술60%+교과40%',min:'있음',note:'수리논술'},
+      {type:'정시',name:'수능 ㉮군 (자연)',cnt:8,method:'수능100% (국20%+수30%+영20%+과탐30%)',min:'-',note:'과탐 필수'},
+      {type:'정시',name:'수능 ㉯군 (인문·자연)',cnt:21,method:'수능100%',min:'-',note:'인문/자연 구분 모집'},
+    ],
+    tags:['논술가능','인문자연구분','㉮㉯군'],
+    features:['인문·자연 구분 지원 (특이사항)','논술전형 인문·자연 모두 운영','서울 성북구 위치']
+  },
+  {
+    id:'gangseo', name:'강서대학교', region:'서울', rc:'r-seoul',
+    total:49, susi:41, jeongsi:8, susiPct:84,
+    minScore:'2합8이내', minLevel:1, jBun:'-',
+    kyoGrade:'3.7등급 (70%컷·추정)', jongGrade:'-', jeongsiBp:'-',
+    reliable:false,
+    memo:'면접 비중 80%. 내신보다 면접 준비가 핵심. 수능최저 2합8 적용.',
+    adm:[
+      {type:'수시',name:'교과 일반학생',cnt:41,method:'교과20%+면접80%',min:'2합8이내',note:'면접 비중 매우 높음'},
+      {type:'정시',name:'수능+면접',cnt:2,method:'수능20%+면접80%',min:'-',note:'소규모 2명'},
+      {type:'정시',name:'이월 (농어촌·기회균등)',cnt:'6이내',method:'교과80%+면접20%',min:'-',note:'수시 미충원시 이월'},
+    ],
+    tags:['면접80%','소규모정시','서울위치'],
+    features:['면접 비중 80% (독특한 구조)','정시 2명 소규모','서울 강서구 위치']
+  },
+  {
+    id:'gachon', name:'가천대학교', region:'경기', rc:'r-gyeonggi',
+    total:107, susi:77, jeongsi:30, susiPct:72,
+    minScore:'있음 (전형별)', minLevel:1, jBun:'나군',
+    kyoGrade:'2.x등급 (추정)', jongGrade:'3.x등급 (추정)', jeongsiBp:'88.92 → 87.4',
+    reliable:false,
+    memo:'가천 자체 환산점수 기준이므로 실제 백분위는 낮을 수 있음. 총 107명 대형 모집.',
+    adm:[
+      {type:'수시',name:'교과 가천의약학',cnt:28,method:'학생부교과 100%',min:'있음',note:'가천 자체 산출방식'},
+      {type:'수시',name:'교과 지역균형',cnt:13,method:'학생부교과 100%',min:'있음',note:''},
+      {type:'수시',name:'교과 기회균형',cnt:6,method:'학생부교과 100%',min:'있음',note:''},
+      {type:'수시',name:'학종 바람개비',cnt:33,method:'서류+면접',min:'없음',note:'경쟁률 23.76대1'},
+      {type:'정시',name:'수능 (나군)',cnt:30,method:'수능100%',min:'-',note:'가천 환산점수 적용'},
+    ],
+    tags:['대형107명','바람개비학종','나군'],
+    features:['107명 수도권 최대 모집','의약학계열 전형 강함','경기도 성남/인천 캠퍼스']
+  },
+  {
+    id:'ajou', name:'아주대학교', region:'경기', rc:'r-gyeonggi',
+    total:70, susi:36, jeongsi:34, susiPct:51,
+    minScore:'있음 (전형별)', minLevel:1, jBun:'나군',
+    kyoGrade:'2.x등급 (추정)', jongGrade:'2.x~3.x등급 추정', jeongsiBp:'80~85 (추정)',
+    reliable:false,
+    memo:'수시·정시 비율 거의 동등. 일반전형4는 인문계열 수능 반영 적용 (특이사항).',
+    adm:[
+      {type:'수시',name:'교과 고교추천',cnt:7,method:'학생부교과 100%',min:'있음',note:''},
+      {type:'수시',name:'학종 일반전형1~3',cnt:23,method:'1단계 서류100%→2단계 면접',min:'전형별',note:'의약학 포함 별도 기준'},
+      {type:'수시',name:'학종 일반전형4',cnt:2,method:'서류+면접',min:'있음',note:'인문계열 반영 적용'},
+      {type:'수시',name:'기타 (기회균형 등)',cnt:4,method:'전형별 상이',min:'전형별',note:''},
+      {type:'정시',name:'수능 나군 (자연1)',cnt:22,method:'수능100% (국20%+수35%+영15%+탐30%)',min:'-',note:''},
+      {type:'정시',name:'수능 나군 (인문1)',cnt:12,method:'수능100% (국25%+수40%+영15%+탐20%)',min:'-',note:'일반전형4 해당'},
+    ],
+    tags:['수시정시동등','인문계열가능','나군'],
+    features:['수시·정시 비율 51:49 균등','일부 전형 인문계열 적용 가능','경기도 수원 위치']
+  },
+  {
+    id:'knu', name:'경북대학교', region:'대구·경북', rc:'r-daegu',
+    total:115, susi:91, jeongsi:24, susiPct:79,
+    minScore:'있음 (상위2개합)', minLevel:2, jBun:'가·나군',
+    kyoGrade:'2.0등급 (일반) / 2.1등급 (지역)',jongGrade:'2.35등급 (학종일반)',jeongsiBp:'4.7대1 경쟁률',
+    reliable:true,
+    memo:'학종 지역인재: 인문 3.09등급 / 자연 3.6등급. 논술전형(AAT) 운영. 국립대.',
+    adm:[
+      {type:'수시',name:'교과 일반 (교과우수)',cnt:15,method:'학생부교과 100%',min:'있음',note:'인문·자연 통합'},
+      {type:'수시',name:'교과 지역인재',cnt:25,method:'학생부교과 100%',min:'있음',note:'대구·경북 고교 필수'},
+      {type:'수시',name:'학종 일반학생',cnt:22,method:'1단계 서류100%→2단계 서류+면접',min:'있음',note:''},
+      {type:'수시',name:'학종 지역인재',cnt:10,method:'1단계 서류100%→2단계',min:'있음',note:'대구·경북 고교 필수'},
+      {type:'수시',name:'논술 (AAT)',cnt:3,method:'논술60%+교과40%',min:'있음',note:'논술형·약술형·풀이형'},
+      {type:'수시',name:'기타 (기회균형 등)',cnt:16,method:'전형별 상이',min:'전형별',note:''},
+      {type:'정시',name:'수능 (가·나군)',cnt:24,method:'수능100% (표준점수 반영)',min:'-',note:''},
+    ],
+    tags:['국립대','지역인재강함','논술가능'],
+    features:['국립대 (등록금 경쟁력)','인문·자연 통합 모집','대구 북구 위치']
+  },
+  {
+    id:'keimyung', name:'계명대학교', region:'대구·경북', rc:'r-daegu',
+    total:150, susi:105, jeongsi:45, susiPct:70,
+    minScore:'2합7이내 (엄격)', minLevel:2, jBun:'다군',
+    kyoGrade:'2.5등급 (일반) / 2.6등급 (지역)', jongGrade:'2.8등급 (학종일반)', jeongsiBp:'5.4대1 (2024)',
+    reliable:true,
+    memo:'수능최저 가장 엄격 (2합7). 총 150명 최대 모집 규모. 교직과정 있음.',
+    adm:[
+      {type:'수시',name:'교과 일반전형',cnt:12,method:'교과80%+출결20%',min:'2합7이내',note:'직탐 제외'},
+      {type:'수시',name:'교과 지역전형',cnt:25,method:'교과40%+진로선택40%+출결20%',min:'2합7이내',note:'대구·경북 필수'},
+      {type:'수시',name:'교과 지역기회균형',cnt:4,method:'학생부100%',min:'2합7이내',note:'간호 4명'},
+      {type:'수시',name:'학종 일반전형',cnt:15,method:'1단계 교과100%(10배수)→2단계 80%+면접20%',min:'2합7이내',note:''},
+      {type:'수시',name:'학종 지역전형',cnt:25,method:'서류 종합 평가→면접',min:'있음',note:''},
+      {type:'수시',name:'학종 면접전형',cnt:24,method:'1단계 교과100%(20배수)→2단계 70%+면접30%',min:'2합8이내',note:''},
+      {type:'정시',name:'수능 (다군)',cnt:45,method:'수능100% (국25%+수25%+영25%+탐25%, 과탐5%가산)',min:'-',note:'미적분/기하+과탐2 필수'},
+    ],
+    tags:['최대150명','수능최저엄격','교직과정'],
+    features:['9개교 중 최대 모집 (150명)','수능최저 2합7 가장 엄격','교직과정 운영']
+  },
+  {
+    id:'daegu', name:'대구대학교', region:'대구·경북', rc:'r-daegu',
+    total:136, susi:121, jeongsi:15, susiPct:89,
+    minScore:'2합8이내 (교과만)', minLevel:1, jBun:'-',
+    kyoGrade:'2.x등급 (추정)', jongGrade:'3.x등급 (추정)', jeongsiBp:'소규모',
+    reliable:false,
+    memo:'수시 비중 89% 압도적. 학종 서류전형 85명 대규모. 간호교육인증 획득 (2019~2029).',
+    adm:[
+      {type:'수시',name:'교과 일반전형',cnt:17,method:'학생부교과 100%',min:'2합8이내',note:'간호만 수능최저 적용'},
+      {type:'수시',name:'교과 지역인재전형',cnt:7,method:'학생부교과 100%',min:'2합8이내',note:'대구·경북 필수'},
+      {type:'수시',name:'교과 면접전형',cnt:2,method:'1단계 학생부100%(10배수)→2단계 면접',min:'확인필요',note:''},
+      {type:'수시',name:'학종 서류전형',cnt:85,method:'서류평가 100%',min:'없음',note:'수능최저 없음'},
+      {type:'수시',name:'학종 지역기회균형',cnt:3,method:'서류평가 100%',min:'없음',note:''},
+      {type:'수시',name:'기타 정원외',cnt:7,method:'전형별 상이',min:'없음',note:'농어촌·기회균형Ⅱ 등'},
+      {type:'정시',name:'수능',cnt:'15+α',method:'수능100%',min:'-',note:'수시 미충원 이월인원 추가 가능'},
+    ],
+    tags:['수시89%','학종서류85명','교직과정'],
+    features:['수시 비중 89% (압도적)','학종 서류 85명 수능최저 없음','간호교육인증 획득 (2029년까지)']
+  }
+];
+
+function regionLabel(rc) {
+  return {'r-seoul':'서울','r-gyeonggi':'경기','r-daegu':'대구·경북'}[rc]||'';
+}
+
+function gradeClass(g) {
+  if (!g || g.includes('추정') || g === '-') return 'grade-na';
+  const n = parseFloat(g);
+  if (n < 2) return 'grade-high';
+  if (n < 3) return 'grade-mid';
+  return 'grade-low';
+}
+
+function renderHomeGrid() {
+  const el = document.getElementById('homeSchoolGrid');
+  el.innerHTML = SCHOOLS.map(s => `
+    <div class="school-card" onclick="goSchoolDetail('${s.id}')">
+      <div class="sc-top">
+        <span class="sc-name">${s.name}</span>
+        <span class="region-badge ${s.rc}">${regionLabel(s.rc)}</span>
+      </div>
+      <div class="sc-stat">총 ${s.total}명 · 수시 ${s.susi}명 / 정시 ${s.jeongsi}명</div>
+      <div class="sc-bar-row">
+        <div class="sc-bar-bg"><div class="sc-bar-fill" style="width:${s.susiPct}%"></div></div>
+        <div class="sc-bar-label">수시${s.susiPct}%</div>
+      </div>
+      <div class="sc-tags">
+        ${s.tags.map(t => `<span class="tag tag-special">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSchoolListGrid() {
+  const el = document.getElementById('schoolListGrid');
+  el.innerHTML = SCHOOLS.map(s => `
+    <div class="school-card" onclick="openSchoolDetail('${s.id}')">
+      <div class="sc-top">
+        <span class="sc-name">${s.name}</span>
+        <span class="region-badge ${s.rc}">${regionLabel(s.rc)}</span>
+      </div>
+      <div class="sc-stat">총 ${s.total}명 · 수시 ${s.susiPct}%</div>
+      <div class="sc-bar-row">
+        <div class="sc-bar-bg"><div class="sc-bar-fill" style="width:${s.susiPct}%"></div></div>
+        <div class="sc-bar-label">${s.susiPct}%</div>
+      </div>
+      <div class="sc-tags">
+        <span class="tag ${s.minLevel===0?'tag-none':'tag-strict'}">수능최저: ${s.minScore}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function goSchoolDetail(id) {
+  goTab('schools');
+  setTimeout(() => openSchoolDetail(id), 50);
+}
+
+function openSchoolDetail(id) {
+  const s = SCHOOLS.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('schools-list').style.display = 'none';
+  document.getElementById('school-detail').style.display = 'block';
+  document.getElementById('detail-content').innerHTML = buildDetail(s);
+  window.scrollTo(0, 0);
+}
+
+function backToList() {
+  document.getElementById('schools-list').style.display = 'block';
+  document.getElementById('school-detail').style.display = 'none';
+}
+
+function buildDetail(s) {
+  return `
+    <div class="detail-panel fade-in">
+      <div class="detail-header">
+        <span class="detail-name">${s.name}</span>
+        <span class="region-badge ${s.rc}">${regionLabel(s.rc)}</span>
+        <span class="reliability-badge ${s.reliable ? 'rel-official' : 'rel-est'}">${s.reliable ? '공식 발표' : '추정값 포함'}</span>
+      </div>
+
+      <div class="detail-stats">
+        <div class="ds-item"><div class="ds-label">입학정원</div><div class="ds-val">${s.total}명</div></div>
+        <div class="ds-item"><div class="ds-label">수시</div><div class="ds-val">${s.susi}명 (${s.susiPct}%)</div></div>
+        <div class="ds-item"><div class="ds-label">정시</div><div class="ds-val">${s.jeongsi}명</div></div>
+        <div class="ds-item"><div class="ds-label">정시 군</div><div class="ds-val">${s.jBun}</div></div>
+        <div class="ds-item"><div class="ds-label">수능최저</div><div class="ds-val" style="font-size:12px">${s.minScore}</div></div>
+        <div class="ds-item"><div class="ds-label">입결 신뢰도</div><div class="ds-val" style="color:${s.reliable ? 'var(--teal)' : 'var(--amber)'};font-size:12px">${s.reliable ? '공식' : '추정'}</div></div>
+      </div>
+
+      <div class="detail-section-title">특징</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        ${s.features.map(f => `<span class="pill tag-special">${f}</span>`).join('')}
+      </div>
+
+      <div class="detail-section-title">전형별 안내</div>
+      <div class="adm-table-wrap">
+        <table class="adm-table">
+          <thead>
+            <tr>
+              <th style="width:40px">구분</th>
+              <th>전형명</th>
+              <th style="width:40px">인원</th>
+              <th>전형방법</th>
+              <th style="width:80px">수능최저</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${s.adm.map(a => `<tr>
+              <td><span class="tag ${a.type==='수시'?'tag-susi':'tag-jeongsi'}">${a.type}</span></td>
+              <td style="font-weight:500">${a.name}</td>
+              <td style="text-align:center;font-weight:700">${a.cnt}</td>
+              <td style="color:var(--text2);font-size:11px">${a.method}</td>
+              <td><span class="tag ${a.min==='없음'||a.min==='-'?'tag-none':'tag-strict'}">${a.min}</span></td>
+              <td style="color:var(--text3);font-size:11px">${a.note}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="divider"></div>
+      <div class="detail-section-title">과거 입시결과 (2024~2025)</div>
+      <div class="result-grid">
+        <div class="rg-item">
+          <div class="rg-label">교과전형 내신</div>
+          <div class="rg-val ${gradeClass(s.kyoGrade)}">${s.kyoGrade}</div>
+        </div>
+        <div class="rg-item">
+          <div class="rg-label">학종·논술 입결</div>
+          <div class="rg-val" style="color:var(--text2)">${s.jongGrade}</div>
+        </div>
+        <div class="rg-item">
+          <div class="rg-label">정시 수능</div>
+          <div class="rg-val" style="color:var(--text2)">${s.jeongsiBp}</div>
+        </div>
+      </div>
+      <div class="note-box">${s.memo}</div>
+    </div>
+  `;
+}
+
+function renderCompare() {
+  const rows = SCHOOLS.map(s => `
+    <tr>
+      <td style="font-weight:700">${s.name}</td>
+      <td><span class="region-badge ${s.rc}">${regionLabel(s.rc)}</span></td>
+      <td style="text-align:center;font-weight:700">${s.total}명</td>
+      <td style="text-align:center;font-size:11px;color:var(--text2)">${s.susi}/${s.jeongsi}</td>
+      <td style="font-size:11px;color:var(--text2)">${s.tags.join(', ')}</td>
+      <td><span class="tag ${s.minLevel===0?'tag-none':'tag-strict'}">${s.minScore}</span></td>
+      <td class="${gradeClass(s.kyoGrade)}" style="font-size:11px">${s.kyoGrade}</td>
+      <td style="font-size:11px;color:var(--text2)">${s.jBun}</td>
+    </tr>
+  `).join('');
+  document.getElementById('compareBody').innerHTML = rows;
+}
+
+function renderResultTables() {
+  const susiRows = [
+    ['한양대', '~1.3등급 이상', '1.96등급', '-', true],
+    ['이화여대', '~1.6등급', '1.6~2.0등급 추정', '-', true],
+    ['성신여대', '1.75등급', '2.x~3.x등급 추정', '3.12등급 (인문)', true],
+    ['강서대', '3.7등급 (70%컷·추정)', '-', '-', false],
+    ['가천대', '2.x등급 (추정)', '3.x등급 (추정)', '-', false],
+    ['아주대', '2.x등급 (추정)', '2.x~3.x등급 추정', '-', false],
+    ['경북대', '2.0등급 (일반) / 2.1등급 (지역)', '2.35등급', '-', true],
+    ['계명대', '2.5등급 (일반) / 2.6등급 (지역)', '2.8등급 (학종일반)', '-', true],
+    ['대구대', '2.x등급 (추정)', '3.x등급 (추정)', '-', false],
+  ];
+  document.getElementById('susiResultBody').innerHTML = susiRows.map(r => `
+    <tr>
+      <td style="font-weight:700">${r[0]}</td>
+      <td class="${gradeClass(r[1])}">${r[1]}</td>
+      <td style="color:var(--text2)">${r[2]}</td>
+      <td style="color:var(--text2)">${r[3]}</td>
+      <td><span class="reliability-badge ${r[4]?'rel-official':'rel-est'}">${r[4]?'공식':'추정'}</span></td>
+    </tr>
+  `).join('');
+
+  const jeongsiRows = [
+    ['이화여대', '다군', '88.13~88.15', '-', '인문·자연 유리한 쪽 반영', true],
+    ['성신여대', '㉮·㉯군', '~85 (백분위 평균)', '-', '예체능 제외 평균', true],
+    ['가천대', '나군', '88.92→87.4 (2025→2026)', '-', '가천 자체환산 기준', false],
+    ['아주대', '나군', '80~85 (추정)', '-', '자연1·인문1 혼합', false],
+    ['한양대', '가군', '가군 (개별확인 필요)', '-', '자체 환산점수 사용', false],
+    ['경북대', '가·나군', '표준점수 반영', '4.7대1', '과탐 가산점 5%', true],
+    ['계명대', '다군', '-', '5.4대1 (2024)', '미적분/기하+과탐2 필수', true],
+    ['대구대', '-', '소규모 정시', '-', '수시 미충원 이월 가능', false],
+    ['강서대', '-', '면접 중심', '-', '정시 2명 소규모', false],
+  ];
+  document.getElementById('jeongsiResultBody').innerHTML = jeongsiRows.map(r => `
+    <tr>
+      <td style="font-weight:700">${r[0]}</td>
+      <td style="color:var(--text2)">${r[1]}</td>
+      <td style="font-weight:500;color:var(--accent)">${r[2]}</td>
+      <td style="color:var(--text2)">${r[3]}</td>
+      <td style="font-size:11px;color:var(--text3)">${r[4]}</td>
+    </tr>
+  `).join('');
+}
+
+let chartsBuilt = false;
+function buildCharts() {
+  if (chartsBuilt) return;
+  chartsBuilt = true;
+  const names = SCHOOLS.map(s => s.name.replace('학교','').replace('대학교','대').replace('여자대','여대'));
+  const susiVals = SCHOOLS.map(s => s.susi);
+  const jeongsiVals = SCHOOLS.map(s => s.jeongsi);
+  const susiPcts = SCHOOLS.map(s => s.susiPct);
+  const minLevels = SCHOOLS.map(s => s.minLevel);
+  const isMobile = window.innerWidth < 600;
+
+  new Chart(document.getElementById('chartBar'), {
+    type: 'bar',
+    data: { labels: names, datasets: [
+      { label: '수시', data: susiVals, backgroundColor: '#0D9488', borderRadius: 3 },
+      { label: '정시', data: jeongsiVals, backgroundColor: '#2563EB', borderRadius: 3 }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { stacked: true, ticks: { font: { size: isMobile ? 9 : 11 } } },
+        y: { stacked: true, ticks: { font: { size: 10 } } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chartSusiPct'), {
+    type: 'bar',
+    data: { labels: names, datasets: [{
+      label: '수시 비율',
+      data: susiPcts,
+      backgroundColor: susiPcts.map(v => v >= 80 ? '#0D9488' : v >= 65 ? '#2563EB' : '#D97706'),
+      borderRadius: 4
+    }]},
+    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { min: 0, max: 100, ticks: { callback: v => v + '%', font: { size: 10 } } },
+        y: { ticks: { font: { size: isMobile ? 9 : 10 } } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chartMinScore'), {
+    type: 'bar',
+    data: { labels: names, datasets: [{
+      label: '수능최저 강도',
+      data: minLevels,
+      backgroundColor: minLevels.map(v => v === 0 ? '#9CA3AF' : v === 1 ? '#0D9488' : '#D97706'),
+      borderRadius: 4
+    }]},
+    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { min: 0, max: 3, ticks: { stepSize: 1, callback: v => ['없음','완화','보통','엄격'][v] || '', font: { size: 10 } } },
+        y: { ticks: { font: { size: isMobile ? 9 : 10 } } }
+      }
+    }
+  });
+
+  const regionData = [
+    { name: '서울 (4개교)', val: SCHOOLS.filter(s => s.rc === 'r-seoul').reduce((a, b) => a + b.total, 0), color: '#2563EB' },
+    { name: '경기 (2개교)', val: SCHOOLS.filter(s => s.rc === 'r-gyeonggi').reduce((a, b) => a + b.total, 0), color: '#0D9488' },
+    { name: '대구·경북 (3개교)', val: SCHOOLS.filter(s => s.rc === 'r-daegu').reduce((a, b) => a + b.total, 0), color: '#D97706' },
+  ];
+  new Chart(document.getElementById('chartRegion'), {
+    type: 'doughnut',
+    data: {
+      labels: regionData.map(d => d.name),
+      datasets: [{ data: regionData.map(d => d.val), backgroundColor: regionData.map(d => d.color), borderWidth: 2, borderColor: '#ffffff' }]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed}명` } }
+      }
+    }
+  });
+}
+
+const tabs = ['home', 'schools', 'compare', 'chart', 'result'];
+function goTab(id) {
+  tabs.forEach(t => {
+    document.getElementById('page-' + t).classList.toggle('active', t === id);
+  });
+  document.querySelectorAll('.nav-tab').forEach((btn, i) => {
+    btn.classList.toggle('active', tabs[i] === id);
+  });
+  if (id === 'chart') setTimeout(buildCharts, 60);
+  if (id === 'schools') {
+    document.getElementById('schools-list').style.display = 'block';
+    document.getElementById('school-detail').style.display = 'none';
+  }
+  window.scrollTo(0, 0);
+}
+
+renderHomeGrid();
+renderSchoolListGrid();
+renderCompare();
+renderResultTables();
+</script>
+</body>
+</html>
